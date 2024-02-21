@@ -20,6 +20,8 @@ function App() {
         id: taskId,
       };
 
+      console.log(newTask)
+
       return {
         ...prevState,
         tasks: [newTask, ...prevState.tasks]
@@ -27,12 +29,17 @@ function App() {
     })
   }
 
-  function handleDeleteTask() {
-    
+  function handleDeleteTask(id) {
+    setProjectsState(prevState => {
+      return {
+        ...prevState,
+        tasks: prevState.tasks.filter((task) => task.id !== id),
+      };
+    });
   }
 
   function handleSelectProject(id) {
-    setProjectsState(prevState => {
+    setProjectsState((prevState) => {
       return {
         ...prevState,
         selectedProjectId: id,
@@ -41,7 +48,7 @@ function App() {
   }
 
   function handleStartAddProject() {
-    setProjectsState(prevState => {
+    setProjectsState((prevState) => {
       return {
         ...prevState,
         selectedProjectId: null,
@@ -50,7 +57,7 @@ function App() {
   }
 
   function handleCancelProject() {
-    setProjectsState(prevState => {
+    setProjectsState((prevState) => {
       return {
         ...prevState,
         selectedProjectId: undefined,
@@ -86,7 +93,9 @@ function App() {
     });
   }
 
-  const selectedProject = projectsState.projects.find(project => project.id === projectsState.selectedProjectId);
+  const selectedProject = projectsState.projects.find(
+    (project) => project.id === projectsState.selectedProjectId
+  );
 
   let content = (
     <SelectedProject
@@ -110,6 +119,7 @@ function App() {
         onStartAddProject={handleStartAddProject}
         projects={projectsState.projects}
         onSelectProject={handleSelectProject}
+        selectedProjectId={projectsState.selectedProjectId}
       />
       {content}
     </main>
